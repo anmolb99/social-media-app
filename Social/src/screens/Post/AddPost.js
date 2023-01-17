@@ -4,7 +4,7 @@ import React from 'react';
 const AddPost = () => {
   return (
     <View>
-      <Text>AddPost yes finally</Text>
+      <Text>AddPost yes finally yoo</Text>
     </View>
   );
 };
