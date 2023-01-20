@@ -14,6 +14,9 @@ import ForgotPassword_ChoosePassword from './src/screens/LoginSignup/ForgotPassw
 import ForgotPassword_Code from './src/screens/LoginSignup/ForgotPassword/ForgotPassword_Code';
 import ForgotPassword_EnterEmail from './src/screens/LoginSignup/ForgotPassword/ForgotPassword_EnterEmail';
 import BottomTab from './src/components/pages/BottomTab';
+import ChatBoxScreen from './src/screens/chat/ChatBoxScreen';
+import PersonalChat from './src/screens/chat/PersonalChat';
+import ProfileSetting from './src/screens/Profile/ProfileSetting';
 
 const Routing = () => {
   const Stack = createNativeStackNavigator();
@@ -48,6 +51,31 @@ const Routing = () => {
           component={ForgotPassword_Code}
         />
         <Stack.Screen name="MainPage" component={BottomTab} />
+        <Stack.Screen
+          name="ChatBox"
+          component={ChatBoxScreen}
+          options={{
+            headerShown: true,
+            headerTitleAlign: 'center',
+            headerTitle: 'Chats',
+          }}
+        />
+        <Stack.Screen
+          name="PersonalChat"
+          component={PersonalChat}
+          options={{
+            headerShown: true,
+            headerTitle: 'avantika_001',
+          }}
+        />
+        <Stack.Screen
+          name="ProfileSetting"
+          component={ProfileSetting}
+          options={{
+            headerShown: true,
+            headerTitle: 'Settings',
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

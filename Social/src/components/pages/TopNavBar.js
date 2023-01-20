@@ -5,12 +5,19 @@ import LogoCommon from '../loginsignup/LogoCommon';
 
 import logo from '../.././assets/images/logo.jpg';
 
-const TopNavBar = () => {
+const TopNavBar = ({navigation}) => {
+  const goToChatbox = () => {
+    navigation.navigate('ChatBox');
+  };
   return (
     <View style={styles.top_container}>
       <Image source={logo} style={styles.logo_app} />
 
-      <TouchableOpacity style={styles.message_icon}>
+      <TouchableOpacity
+        style={styles.message_icon}
+        onPress={() => {
+          goToChatbox();
+        }}>
         <Icon name="chat" size={25} />
       </TouchableOpacity>
     </View>

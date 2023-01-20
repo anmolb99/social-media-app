@@ -4,7 +4,7 @@ import TopNavBar from '../../components/pages/TopNavBar';
 import {FlatList} from 'native-base';
 import PostBigcard from '../../components/posts/PostBigcard';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const data = [
     {
       id: '1',
@@ -91,7 +91,7 @@ const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <StatusBar />
-      <TopNavBar />
+      <TopNavBar navigation={navigation} />
       <FlatList
         data={data}
         keyExtractor={item => {

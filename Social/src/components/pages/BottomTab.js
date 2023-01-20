@@ -68,13 +68,16 @@ const BottomTab = () => {
         options={{
           tabBarIcon: ({focused}) => (
             <Icon
-              name="favorite"
+              name="notifications"
               style={{
                 color: focused ? 'black' : 'gray',
                 fontSize: focused ? 28 : 25,
               }}
             />
           ),
+          headerShown: true,
+          headerTitleAlign: 'center',
+          headerTitle: 'Notifications',
         }}
       />
       <Tab.Screen
