@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import {HStack, VStack} from 'native-base';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -24,9 +25,17 @@ import {
 } from '../../../commonStyles/PagesStyle';
 import LogoCommon from '../../../components/loginsignup/LogoCommon';
 
-const Signup_Code = ({navigation}) => {
+const Signup_Code = ({navigation, route}) => {
+  const {email} = route.params;
+  const {verificationCode} = route.params;
+
+  const [verifyCode, setVerifyCode] = useState(null);
   const submitCode = () => {
-    navigation.navigate('Signup_Username');
+    if (verificationCode == verifyCode) {
+      navigation.navigate('Signup_Username', {email});
+    } else {
+      Alert.alert(null, 'Wrong verification code');
+    }
   };
   return (
     <View style={formContainer}>
@@ -44,9 +53,14 @@ const Signup_Code = ({navigation}) => {
           A verification code has been sent to your email
         </Text>
         <TextInput
+          keyboardType="numeric"
+          value={verifyCode}
           style={text_input}
           placeholder="Enter Verification Code"
           placeholderTextColor={'gray'}
+          onChangeText={text => {
+            setVerifyCode(text);
+          }}
         />
         <TouchableOpacity style={login_button} onPress={() => submitCode()}>
           <Text style={login_button_text}>Next</Text>

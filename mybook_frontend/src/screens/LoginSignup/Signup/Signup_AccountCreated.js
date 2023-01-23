@@ -25,7 +25,9 @@ import {
 import LogoCommon from '../../../components/loginsignup/LogoCommon';
 
 const Signup_AccountCreated = ({navigation}) => {
-  const goToFeed = () => {};
+  const goToLogin = () => {
+    navigation.navigate('Login');
+  };
   return (
     <View style={formContainer}>
       <TouchableOpacity
@@ -43,7 +45,7 @@ const Signup_AccountCreated = ({navigation}) => {
           <Text style={[header_text, {color: 'black'}]}>Account Created</Text>
         </HStack>
 
-        <TouchableOpacity style={login_button} onPress={() => goToFeed()}>
+        <TouchableOpacity style={login_button} onPress={() => goToLogin()}>
           <Text style={login_button_text}>Let's Roll</Text>
         </TouchableOpacity>
       </VStack>
