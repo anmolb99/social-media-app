@@ -4,8 +4,10 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 
 import {VStack, HStack} from 'native-base';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -25,10 +27,37 @@ import {
   back_text,
   header_text,
 } from '../../../commonStyles/PagesStyle';
+import axios from 'axios';
+import {API_URL} from '../../../api/Api';
 
 const ForgotPassword_EnterEmail = ({navigation}) => {
-  const submitEmail = () => {
-    navigation.navigate('ForgotPassword_Code');
+  const [email, setEmail] = useState(null);
+  const [loading, setLoading] = useState(null);
+  const submitEmail = async () => {
+    setLoading(true);
+    if (!email) {
+      Alert.alert(null, 'Enter email');
+    } else {
+      try {
+        const res = await axios.post(`${API_URL}/fp_verify_email`, {
+          email: email,
+        });
+
+        if (res.data.msg === 'code sent') {
+          setLoading(false);
+          navigation.navigate('ForgotPassword_Code', {
+            email: email,
+            verificationCode: res.data.verificationCode,
+          });
+        }
+      } catch (error) {
+        console.log(error.response.data.error);
+        if (error.response.data.error === 'Invalid credentials') {
+          setLoading(false);
+          Alert.alert(null, 'Invalid credentials');
+        }
+      }
+    }
   };
   return (
     <View style={formContainer}>
@@ -48,14 +77,22 @@ const ForgotPassword_EnterEmail = ({navigation}) => {
           style={text_input}
           placeholder="Enter Email"
           placeholderTextColor={'gray'}
+          value={email}
+          onChangeText={txt => {
+            setEmail(txt);
+          }}
         />
-        <TouchableOpacity
-          style={login_button}
-          onPress={() => {
-            submitEmail();
-          }}>
-          <Text style={login_button_text}>Next</Text>
-        </TouchableOpacity>
+        {loading ? (
+          <ActivityIndicator color={'black'} size={40} />
+        ) : (
+          <TouchableOpacity
+            style={login_button}
+            onPress={() => {
+              submitEmail();
+            }}>
+            <Text style={login_button_text}>Next</Text>
+          </TouchableOpacity>
+        )}
       </VStack>
     </View>
   );

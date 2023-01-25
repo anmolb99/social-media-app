@@ -25,7 +25,9 @@ import {
 import LogoCommon from '../../../components/loginsignup/LogoCommon';
 
 const ForgotPassword_AccountRecovered = ({navigation}) => {
-  const goToFeed = () => {};
+  const goToFeed = () => {
+    navigation.navigate('Login');
+  };
   return (
     <View style={formContainer}>
       <TouchableOpacity

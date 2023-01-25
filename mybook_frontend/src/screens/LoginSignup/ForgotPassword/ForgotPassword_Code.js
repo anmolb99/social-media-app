@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {
   StyleSheet,
@@ -24,9 +24,20 @@ import {
 } from '../../../commonStyles/PagesStyle';
 import LogoCommon from '../../../components/loginsignup/LogoCommon';
 
-const ForgotPassword_Code = ({navigation}) => {
+const ForgotPassword_Code = ({navigation, route}) => {
+  const {email} = route.params;
+  const {verificationCode} = route.params;
+
+  const [verifyCode, setVerifyCode] = useState(null);
+
   const submitCode = () => {
-    navigation.navigate('ForgotPassword_ChoosePassword');
+    if (verificationCode == verifyCode) {
+      navigation.navigate('ForgotPassword_ChoosePassword', {
+        email,
+      });
+    } else {
+      Alert.alert(null, 'Wrong verification code');
+    }
   };
   return (
     <View style={formContainer}>
@@ -47,6 +58,10 @@ const ForgotPassword_Code = ({navigation}) => {
           style={text_input}
           placeholder="Enter Verification Code"
           placeholderTextColor={'gray'}
+          value={verifyCode}
+          onChangeText={text => {
+            setVerifyCode(text);
+          }}
         />
         <TouchableOpacity style={login_button} onPress={() => submitCode()}>
           <Text style={login_button_text}>Next</Text>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import {
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import {HStack, VStack} from 'native-base';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -23,9 +24,32 @@ import {
   header_text,
 } from '../../../commonStyles/PagesStyle';
 import LogoCommon from '../../../components/loginsignup/LogoCommon';
+import axios from 'axios';
+import {API_URL} from '../../../api/Api';
 
-const ForgotPassword_ChoosePassword = ({navigation}) => {
-  const submitPassword = () => {
+const ForgotPassword_ChoosePassword = ({navigation, route}) => {
+  const {email} = route.params;
+
+  const [password, setPassword] = useState(null);
+  const [cpassword, setCpassword] = useState(null);
+
+  const submitPassword = async () => {
+    if (!password || !cpassword) {
+      Alert.alert(null, 'Please fill all the feilds');
+    } else if (password !== cpassword) {
+      Alert.alert(null, "Passwords don't match");
+    } else {
+      try {
+        const res = await axios.post(`${API_URL}/reset_password`, {
+          email,
+          password,
+        });
+        console.log(res.data.msg);
+      } catch (error) {
+        console.log(error.response.data.error);
+        Alert.alert(null, error.response.data.error);
+      }
+    }
     navigation.navigate('ForgotPassword_AccountRecovered');
   };
   return (
@@ -45,11 +69,21 @@ const ForgotPassword_ChoosePassword = ({navigation}) => {
           style={text_input}
           placeholder="Enter New Password"
           placeholderTextColor={'gray'}
+          value={password}
+          secureTextEntry={true}
+          onChangeText={text => {
+            setPassword(text);
+          }}
         />
         <TextInput
           style={text_input}
           placeholder="Confirm New Password"
           placeholderTextColor={'gray'}
+          value={cpassword}
+          secureTextEntry={true}
+          onChangeText={text => {
+            setCpassword(text);
+          }}
         />
         <TouchableOpacity style={login_button} onPress={() => submitPassword()}>
           <Text style={login_button_text}>Next</Text>

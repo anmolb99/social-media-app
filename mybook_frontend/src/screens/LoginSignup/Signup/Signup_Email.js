@@ -40,7 +40,9 @@ const Signup_Email = ({navigation}) => {
       Alert.alert('please enter email');
     } else {
       try {
-        const res = await axios.post(`${API_URL}/signup_verify_email`, {email});
+        const res = await axios.post(`${API_URL}/signup_verify_email`, {
+          email: email,
+        });
         // console.log(res);
 
         setLoading(false);

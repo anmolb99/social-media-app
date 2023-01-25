@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   Image,
   StyleSheet,
@@ -8,9 +8,12 @@ import {
   TouchableOpacity,
   TextInput,
   SafeAreaView,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 import LogoCommon from '../../../components/loginsignup/LogoCommon';
 import {Button, Input, VStack, Link, HStack} from 'native-base';
+import {API_URL} from '../../../api/Api';
 
 //components
 import {
@@ -19,10 +22,39 @@ import {
   login_button,
   login_button_text,
 } from '../../../commonStyles/Forms';
+import axios from 'axios';
 
 const Login = ({navigation}) => {
-  const handleLogin = () => {
-    navigation.navigate('MainPage');
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    // console.log(email, password);
+    setLoading(true);
+    if (!email || !password) {
+      Alert.alert(null, 'please fill all the feilds');
+    } else {
+      try {
+        // navigation.navigate('MainPage');
+        const res = await axios.post(`${API_URL}/signin`, {
+          email: email,
+          password: password,
+        });
+        if (res.data.msg === 'signed in successfully') {
+          console.log('logged in');
+          setLoading(false);
+        }
+      } catch (error) {
+        // console.log(error.response.data.error);
+        if (error.response.data.error === 'Invalid credentials') {
+          setLoading(false);
+          Alert.alert(null, 'Invalid credentials');
+        } else {
+          Alert.alert(null, 'something went wrong');
+        }
+      }
+    }
   };
   return (
     <View style={formContainer}>
@@ -34,6 +66,10 @@ const Login = ({navigation}) => {
           style={text_input}
           placeholder="Enter Email"
           placeholderTextColor={'gray'}
+          value={email}
+          onChangeText={text => {
+            setEmail(text);
+          }}
         />
 
         <View style={{width: '100%'}}>
@@ -42,6 +78,10 @@ const Login = ({navigation}) => {
             placeholder="Enter Password"
             placeholderTextColor={'gray'}
             secureTextEntry={true}
+            value={password}
+            onChangeText={text => {
+              setPassword(text);
+            }}
           />
           <Text
             style={[styles.link_text, {alignSelf: 'flex-end', marginTop: 5}]}
@@ -51,14 +91,17 @@ const Login = ({navigation}) => {
             Forget Password?
           </Text>
         </View>
-
-        <TouchableOpacity
-          style={login_button}
-          onPress={() => {
-            handleLogin();
-          }}>
-          <Text style={login_button_text}>Login</Text>
-        </TouchableOpacity>
+        {loading ? (
+          <ActivityIndicator color={'black'} size={40} />
+        ) : (
+          <TouchableOpacity
+            style={login_button}
+            onPress={() => {
+              handleLogin();
+            }}>
+            <Text style={login_button_text}>Login</Text>
+          </TouchableOpacity>
+        )}
         <HStack space={1}>
           <Text>I'm a new user.</Text>
           <Text
