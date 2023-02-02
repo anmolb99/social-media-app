@@ -16,59 +16,44 @@ import nopic from '../../assets/images/nopic.jpg';
 import {useIsFocused} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {addUserData} from '../../redux/reducers/UserReducer';
+import {back_text, back_icon} from '../../commonStyles/PagesStyle';
+import {HStack} from 'native-base';
 
-const MyProfile = ({navigation}) => {
+const UserProfile = ({navigation}) => {
   const [userData, setUserData] = useState(null);
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
-  const getMyProfile = async () => {
+  const getUserProfile = async () => {
     try {
-      const user = await AsyncStorage.getItem('user');
-      // console.log(JSON.parse(user));
-      if (user) {
-        console.log(userData);
-        const token = JSON.parse(user).token;
-        const res = await axios.get(`${API_URL}/my_profile`, {
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
-        });
-        // console.log(res.data.user);
+      const res = await axios.post(`${API_URL}/user_profile`, {
+        id: '63cfe5b6a3c3a07522c9e986',
+      });
+      console.log(res.data.user);
 
-        if (res.data.msg === 'logged in successfully') {
-          setUserData(res.data.user);
-          const {_id, email, bio, profilepic} = res.data.user;
-          dispatch(addUserData({id: _id, email, bio, profilepic}));
-        }
-      } else {
-        navigation.navigate('Login');
+      if (res.data.msg === 'user fetched') {
+        setUserData(res.data.user);
       }
     } catch (error) {
       console.log(error);
-      navigation.navigate('Login');
+      //   navigation.navigate('Login');
     }
   };
 
   useEffect(() => {
-    getMyProfile();
+    getUserProfile();
   }, [isFocused]);
 
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.profile_header}>
-          <Text style={styles.profile_text}>My Profile</Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ProfileSetting')}
-            style={styles.settings_icon}>
-            <Icon name="settings" size={25} />
-          </TouchableOpacity>
-        </View>
-
+        <HStack space={1} style={{paddingTop: 20, paddingLeft: 20}}>
+          <Icon name="arrow-back-ios" style={back_icon} />
+          <Text style={back_text}>Back</Text>
+        </HStack>
         {userData ? (
           <FlatList
-            contentContainerStyle={{paddingHorizontal: 10}}
+            contentContainerStyle={{alignItems: 'center'}}
             numColumns={3}
             data={userData.posts}
             keyExtractor={item => {
@@ -103,6 +88,15 @@ const MyProfile = ({navigation}) => {
                     </Text>
                   </TouchableOpacity>
                 </View>
+                <View style={[styles.userdata_style, {paddingTop: 0}]}>
+                  <TouchableOpacity style={styles.btn_fm}>
+                    <Text style={styles.foll_style}>Follow</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.btn_fm}>
+                    <Text style={styles.foll_style}>Message</Text>
+                  </TouchableOpacity>
+                </View>
                 {userData.bio.length > 0 ? (
                   <Text style={styles.bio_style}>{userData.bio}</Text>
                 ) : null}
@@ -115,11 +109,10 @@ const MyProfile = ({navigation}) => {
               </View>
             }
             renderItem={({item}) => {
-              // console.log(item);
               return (
                 <TouchableOpacity>
                   <Image
-                    source={{uri: `${API_URL}/${item.postimage}`}}
+                    source={{uri: item.post_img}}
                     style={styles.post_small_card}
                   />
                 </TouchableOpacity>
@@ -127,25 +120,21 @@ const MyProfile = ({navigation}) => {
             }}
           />
         ) : (
-          <ActivityIndicator
-            style={{flex: 1, alignItems: 'center'}}
-            size={50}
-            color={'#242424'}
-          />
+          <ActivityIndicator />
         )}
       </View>
     </>
   );
 };
 
-export default MyProfile;
+export default UserProfile;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   profile_header: {
-    height: 50,
+    height: 56,
     backgroundColor: '#fff',
     width: '100%',
     flexDirection: 'row',
@@ -175,10 +164,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 20,
     fontWeight: '600',
-    backgroundColor: '#d4d2d2',
-    borderRadius: 15,
-    paddingHorizontal: 15,
-    paddingVertical: 5,
   },
   userdata_style: {
     width: '100%',
@@ -212,8 +197,6 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     textAlign: 'center',
     backgroundColor: '#d4d2d2',
-    borderRadius: 10,
-    // borderWidth: 1,
   },
   post_small_card: {
     height: 110,
@@ -223,5 +206,11 @@ const styles = StyleSheet.create({
   nopost_text: {
     alignSelf: 'center',
     marginTop: 50,
+  },
+  btn_fm: {
+    backgroundColor: 'green',
+    paddingHorizontal: 20,
+    paddingVertical: 7,
+    borderRadius: 3,
   },
 });

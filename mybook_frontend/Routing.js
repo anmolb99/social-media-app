@@ -17,13 +17,18 @@ import BottomTab from './src/components/pages/BottomTab';
 import ChatBoxScreen from './src/screens/chat/ChatBoxScreen';
 import PersonalChat from './src/screens/chat/PersonalChat';
 import ProfileSetting from './src/screens/Profile/ProfileSetting';
+import ChangePassword from './src/screens/Profile/ChangePassword';
+import EditProfile from './src/screens/Profile/EditProfile';
+import EditProfilePic from './src/screens/Profile/EditProfilePic';
+import EditBio from './src/screens/Profile/EditBio';
+import UserProfile from './src/screens/Profile/UserProfile';
 
 const Routing = () => {
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="MainPage"
         screenOptions={{headerShown: false, animation: 'slide_from_right'}}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Signup_Username" component={Signup_Username} />
@@ -76,6 +81,18 @@ const Routing = () => {
             headerTitle: 'Settings',
           }}
         />
+        <Stack.Screen
+          name="EditProfile"
+          component={EditProfile}
+          options={{
+            headerShown: true,
+            headerTitle: 'Edit Profile',
+          }}
+        />
+        <Stack.Screen name="EditProfilePic" component={EditProfilePic} />
+        <Stack.Screen name="EditBio" component={EditBio} />
+        <Stack.Screen name="ChangePassword" component={ChangePassword} />
+        <Stack.Screen name="UserProfile" component={UserProfile} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -23,6 +23,18 @@ const userSchemema = mongoose.Schema({
     type: Array,
     default: [],
   },
+  followers: {
+    type: Array,
+    default: [],
+  },
+  following: {
+    type: Array,
+    default: [],
+  },
+  bio: {
+    type: String,
+    default: "",
+  },
 });
 
 userSchemema.pre("save", async function (next) {

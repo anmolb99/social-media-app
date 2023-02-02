@@ -1,15 +1,28 @@
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ProfileSetting = () => {
+const ProfileSetting = ({navigation}) => {
+  const logOut = async () => {
+    await AsyncStorage.removeItem('user');
+    navigation.navigate('Login');
+  };
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.edit_profile}>
+      <TouchableOpacity
+        style={styles.edit_profile}
+        onPress={() => {
+          navigation.navigate('EditProfile');
+        }}>
         <Text style={styles.text_style}>Edit Profile</Text>
         <Icon name="keyboard-arrow-right" style={styles.icon_style} />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.edit_profile}>
+      <TouchableOpacity
+        style={styles.edit_profile}
+        onPress={() => {
+          navigation.navigate('ChangePassword');
+        }}>
         <Text style={styles.text_style}>Change Password</Text>
         <Icon name="keyboard-arrow-right" style={styles.icon_style} />
       </TouchableOpacity>
@@ -34,7 +47,7 @@ const ProfileSetting = () => {
           style={[styles.icon_style, {fontSize: 17, color: 'red'}]}
         />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.logoutbutton}>
+      <TouchableOpacity style={styles.logoutbutton} onPress={() => logOut()}>
         <Text style={styles.logout_text}>Log Out</Text>
         <Icon name="logout" size={20} color={'red'} />
       </TouchableOpacity>

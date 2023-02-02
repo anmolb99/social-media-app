@@ -23,6 +23,7 @@ import {
   login_button_text,
 } from '../../../commonStyles/Forms';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ({navigation}) => {
   const [email, setEmail] = useState(null);
@@ -33,20 +34,24 @@ const Login = ({navigation}) => {
     // console.log(email, password);
     setLoading(true);
     if (!email || !password) {
+      setLoading(false);
       Alert.alert(null, 'please fill all the feilds');
     } else {
       try {
-        // navigation.navigate('MainPage');
         const res = await axios.post(`${API_URL}/signin`, {
           email: email,
           password: password,
         });
+
         if (res.data.msg === 'signed in successfully') {
           console.log('logged in');
+          await AsyncStorage.setItem('user', JSON.stringify(res.data));
           setLoading(false);
+
+          navigation.navigate('MainPage');
         }
       } catch (error) {
-        // console.log(error.response.data.error);
+        console.log(error);
         if (error.response.data.error === 'Invalid credentials') {
           setLoading(false);
           Alert.alert(null, 'Invalid credentials');
