@@ -22,6 +22,7 @@ import EditProfile from './src/screens/Profile/EditProfile';
 import EditProfilePic from './src/screens/Profile/EditProfilePic';
 import EditBio from './src/screens/Profile/EditBio';
 import UserProfile from './src/screens/Profile/UserProfile';
+import ChangeUsername from './src/screens/Profile/ChangeUsername';
 
 const Routing = () => {
   const Stack = createNativeStackNavigator();
@@ -93,6 +94,7 @@ const Routing = () => {
         <Stack.Screen name="EditBio" component={EditBio} />
         <Stack.Screen name="ChangePassword" component={ChangePassword} />
         <Stack.Screen name="UserProfile" component={UserProfile} />
+        <Stack.Screen name="ChangeUsername" component={ChangeUsername} />
       </Stack.Navigator>
     </NavigationContainer>
   );

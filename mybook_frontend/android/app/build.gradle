@@ -98,6 +98,7 @@ android {
 
     namespace "com.social"
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId "com.social"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion

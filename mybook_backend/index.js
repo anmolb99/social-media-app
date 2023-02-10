@@ -10,9 +10,15 @@ app.use(express.static(__dirname + "/Images/ProfilePics"));
 app.use(express.static(__dirname + "/Images/Posts"));
 
 const authRoutes = require("./routes/authRoutes");
+const profileRoutes = require("./routes/profileRoutes");
+const postRoutes = require("./routes/postRoutes");
+const editProfileRoutes = require("./routes/editProfileRoutes");
 
 app.use(bodyParser.json());
 app.use(authRoutes);
+app.use(profileRoutes);
+app.use(postRoutes);
+app.use(editProfileRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello world");

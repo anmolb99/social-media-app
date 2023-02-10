@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import {HStack, VStack} from 'native-base';
 import Icon from 'react-native-vector-icons/MaterialIcons';

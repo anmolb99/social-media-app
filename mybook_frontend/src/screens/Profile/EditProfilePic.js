@@ -32,8 +32,8 @@ import {
 } from '../../commonStyles/PagesStyle';
 import axios from 'axios';
 import {API_URL} from '../../api/Api';
-import {launchImageLibrary} from 'react-native-image-picker';
 import {useSelector} from 'react-redux';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const EditProfilePic = ({navigation}) => {
   const {reduxUserData} = useSelector(state => state.reduxUserData);
@@ -49,11 +49,11 @@ const EditProfilePic = ({navigation}) => {
     data.append('id', reduxUserData.id);
     data.append(
       'photo',
-      profileImage.uri
+      profileImage.path
         ? {
-            uri: profileImage.uri,
-            type: profileImage.type,
-            name: profileImage.fileName,
+            uri: profileImage.path,
+            type: profileImage.mime,
+            name: `${Date.now() * 59}.jpg`,
           }
         : '',
     );
@@ -77,20 +77,14 @@ const EditProfilePic = ({navigation}) => {
   };
 
   const ChooseImage = async () => {
-    const options = {
-      mediaType: 'photo',
-    };
+    const result = await ImagePicker.openPicker({
+      height: 400,
+      width: 400,
+      cropping: true,
+    });
 
-    const result = await launchImageLibrary(options);
-    console.log(result);
-    if (result.didCancel === true) {
-      console.log('canceled');
-    } else {
-      console.log('selected');
-      // console.log(result.assets[0]);
-      setSelectedImage(result.assets[0].uri);
-      setprofileImage(result.assets[0]);
-    }
+    setSelectedImage(result.path);
+    setprofileImage(result);
   };
 
   const RemoveImage = () => {

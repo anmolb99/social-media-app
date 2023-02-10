@@ -27,7 +27,7 @@ const MyProfile = ({navigation}) => {
       const user = await AsyncStorage.getItem('user');
       // console.log(JSON.parse(user));
       if (user) {
-        console.log(userData);
+        // console.log(userData);
         const token = JSON.parse(user).token;
         const res = await axios.get(`${API_URL}/my_profile`, {
           headers: {
@@ -72,7 +72,7 @@ const MyProfile = ({navigation}) => {
             numColumns={3}
             data={userData.posts}
             keyExtractor={item => {
-              return item.id;
+              return item.postimage;
             }}
             ListHeaderComponent={
               <View>
