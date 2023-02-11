@@ -79,7 +79,7 @@ router.post("/searchuser", async (req, res) => {
 
 router.post("/add_follower", async (req, res) => {
   const { userid, follid, username, profilepic } = req.body;
-  console.log(userid, follid, username, profilepic);
+  // console.log(userid, follid, username, profilepic);
   try {
     if (!userid || !follid || !username || !profilepic) {
       res.status(422).json({ error: "login again" });
@@ -93,7 +93,7 @@ router.post("/add_follower", async (req, res) => {
         },
       });
 
-      console.log(follExist);
+      // console.log(follExist);
 
       if (follExist) {
         res.status(422).json({ error: "follower already exist" });
@@ -139,6 +139,8 @@ router.post("/remove_follower", async (req, res) => {
       },
     });
 
+    // console.log(follExist);
+
     if (follExist) {
       // remove follower from user followers
 
@@ -160,11 +162,11 @@ router.post("/remove_follower", async (req, res) => {
 
       res.status(200).json({ msg: "unfollowed" });
     } else {
-      console.log(error);
-      res.status(422).json({ error });
+      res.status(422).json({ error: "user not exist" });
     }
   } catch (error) {
     console.log(error);
+    res.status(422).json({ error });
   }
 });
 

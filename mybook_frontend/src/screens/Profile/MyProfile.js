@@ -89,14 +89,28 @@ const MyProfile = ({navigation}) => {
 
                 <Text style={styles.username_style}>@{userData.username}</Text>
                 <View style={styles.userdata_style}>
-                  <TouchableOpacity style={styles.particular_view}>
+                  <TouchableOpacity
+                    style={styles.particular_view}
+                    onPress={() => {
+                      navigation.navigate('Followers', {
+                        followers: userData.followers,
+                        isMyProfile: true,
+                      });
+                    }}>
                     <Text style={styles.foll_style}>Followers</Text>
                     <Text style={styles.foll_count_style}>
                       {userData.followers.length}
                     </Text>
                   </TouchableOpacity>
                   <View style={styles.v_line}></View>
-                  <TouchableOpacity style={styles.particular_view}>
+                  <TouchableOpacity
+                    style={styles.particular_view}
+                    onPress={() => {
+                      navigation.navigate('Following', {
+                        following: userData.following,
+                        isMyProfile: true,
+                      });
+                    }}>
                     <Text style={styles.foll_style}>Following</Text>
                     <Text style={styles.foll_count_style}>
                       {userData.following.length}
